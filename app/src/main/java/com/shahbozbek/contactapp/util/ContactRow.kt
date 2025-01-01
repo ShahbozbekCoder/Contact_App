@@ -2,6 +2,7 @@ package com.shahbozbek.contactapp.util
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,10 +28,11 @@ import coil.compose.rememberAsyncImagePainter
 import com.shahbozbek.contactapp.data.ContactEntity
 
 @Composable
-fun ContactRow(contact: ContactEntity) {
+fun ContactRow(contact: ContactEntity, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         // Avatar
@@ -75,11 +77,4 @@ fun ContactRow(contact: ContactEntity) {
             HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ContactRowPreview() {
-    ContactRow(contact = ContactEntity(name = "John Doe", phoneNumber = "123-456-7890"))
-
 }

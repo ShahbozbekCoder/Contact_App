@@ -47,6 +47,7 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.4.0")
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation (libs.androidx.appcompat)

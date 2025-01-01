@@ -1,5 +1,6 @@
 package com.shahbozbek.contactapp.ui.screens.main
 
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,16 +43,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.shahbozbek.contactapp.R
-import com.shahbozbek.contactapp.data.ContactEntity
 import com.shahbozbek.contactapp.util.ContactInRow
 import com.shahbozbek.contactapp.util.ContactRow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(navController: NavController? = null, viewModel: MainScreenViewModel) {
+fun MainScreen(
+    navController: NavController,
+    viewModel: MainScreenViewModel = hiltViewModel()
+) {
     var searchQuery by remember { mutableStateOf("") }
     val context = LocalContext.current
     val groupedContacts = viewModel.groupedFilteredContacts
@@ -158,8 +162,14 @@ fun MainScreen(navController: NavController? = null, viewModel: MainScreenViewMo
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         )
                     }
-                    items(contactsForInitial.size) { contact ->
-                        ContactRow(contactsForInitial[contact])
+                    items(contactsForInitial.size) { index ->
+                        val contact = contactsForInitial[index]
+                        ContactRow(contact) {
+                            val avatarUrlEncoded = Uri.encode(contact.avatarUrl ?: "")
+                            navController.navigate(
+                                "contact_detail_screen/${contact.name}/${contact.phoneNumber}/$avatarUrlEncoded"
+                            )
+                        }
                     }
                 }
             }
@@ -196,20 +206,4 @@ fun AlphabetScrollBar(onLetterSelected: (Char) -> Unit) {
             )
         }
     }
-}
-
-
-@Composable
-fun ContactsList(contacts: List<ContactEntity>) {
-    LazyColumn {
-        items(contacts.size) { contact ->
-            ContactRow(contacts[contact])
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ContactsScreenPreview() {
-    //ContactsScreen(viewModel = ContactViewModel(contactRepository))
 }

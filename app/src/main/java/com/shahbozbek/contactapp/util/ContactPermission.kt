@@ -1,7 +1,6 @@
 package com.shahbozbek.contactapp.util
 
 import android.app.Activity
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -24,17 +24,17 @@ import com.shahbozbek.contactapp.ui.screens.main.MainScreen
 import com.shahbozbek.contactapp.ui.screens.main.MainScreenViewModel
 
 @Composable
-fun ContactApp(viewModel: MainScreenViewModel) {
+fun ContactApp(navController: NavController) {
     val context = LocalContext.current
-    ContactPermission(context, viewModel)
+    ContactPermission(navController)
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ContactPermission(context: Context, viewModel: MainScreenViewModel) {
+fun ContactPermission(navController: NavController) {
     val permissionState = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
     if (permissionState.status.isGranted) {
-        MainScreen(viewModel = viewModel)
+        MainScreen(navController)
     } else {
         Column(
             modifier = Modifier.fillMaxSize(),
