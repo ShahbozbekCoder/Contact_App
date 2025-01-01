@@ -1,4 +1,4 @@
-package com.shahbozbek.contactapp.ui.screens
+package com.shahbozbek.contactapp.ui.screens.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -42,19 +42,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.shahbozbek.contactapp.R
 import com.shahbozbek.contactapp.data.ContactEntity
 import com.shahbozbek.contactapp.util.ContactInRow
 import com.shahbozbek.contactapp.util.ContactRow
-import com.shahbozbek.contactapp.util.groupContactsByInitial
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(viewModel: MainScreenViewModel) {
+fun MainScreen(navController: NavController? = null, viewModel: MainScreenViewModel) {
     var searchQuery by remember { mutableStateOf("") }
     val context = LocalContext.current
-    val groupedContacts = viewModel.groupedContacts
+    val groupedContacts = viewModel.groupedFilteredContacts
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
@@ -153,7 +153,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                             text = initial.toString(),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color(0xFFE9EBEC))
+                                .background(Color(0xFFEFF0F6))
                                 .padding(4.dp),
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         )

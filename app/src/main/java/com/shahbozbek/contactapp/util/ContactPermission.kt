@@ -8,20 +8,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.Alignment
-import androidx.compose.material3.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.shahbozbek.contactapp.ui.screens.MainScreenViewModel
-import com.shahbozbek.contactapp.ui.screens.MainScreen
 import com.shahbozbek.contactapp.data.ContactEntity
+import com.shahbozbek.contactapp.ui.screens.main.MainScreen
+import com.shahbozbek.contactapp.ui.screens.main.MainScreenViewModel
 
 @Composable
 fun ContactApp(viewModel: MainScreenViewModel) {
@@ -34,7 +34,7 @@ fun ContactApp(viewModel: MainScreenViewModel) {
 fun ContactPermission(context: Context, viewModel: MainScreenViewModel) {
     val permissionState = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
     if (permissionState.status.isGranted) {
-        MainScreen(viewModel)
+        MainScreen(viewModel = viewModel)
     } else {
         Column(
             modifier = Modifier.fillMaxSize(),

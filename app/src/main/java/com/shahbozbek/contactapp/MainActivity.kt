@@ -9,7 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.shahbozbek.contactapp.ui.screens.MainScreenViewModel
+import com.shahbozbek.contactapp.naviagtion.MyNavigation
+import com.shahbozbek.contactapp.ui.screens.main.MainScreenViewModel
 import com.shahbozbek.contactapp.ui.theme.ContactAppTheme
 import com.shahbozbek.contactapp.util.ContactApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ContactApp(viewModel)
+                    MyNavigation(viewModel)
                 }
             }
         }

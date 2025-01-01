@@ -1,4 +1,4 @@
-package com.shahbozbek.contactapp.ui.screens
+package com.shahbozbek.contactapp.ui.screens.main
 
 import android.content.Context
 import android.provider.ContactsContract
@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(private val contactRepository: ContactRepository) : ViewModel() {
+class MainScreenViewModel @Inject constructor(private val contactRepository: ContactRepository) :
+    ViewModel() {
     private val _contacts = mutableStateListOf<ContactEntity>()
     val contacts: List<ContactEntity> get() = _contacts
 
@@ -23,15 +24,20 @@ class MainScreenViewModel @Inject constructor(private val contactRepository: Con
     val groupedContacts: Map<Char, List<ContactEntity>>
         get() = groupContactsByInitial(_contacts)
 
+    val groupedFilteredContacts: Map<Char, List<ContactEntity>>
+        get() = groupContactsByInitial(_filteredContacts) // Filtrlash uchun to'g'ri ro'yxat
+
     fun getAllContacts() = contactRepository.getAllContacts()
 
     fun insert(contact: ContactEntity) = viewModelScope.launch {
         contactRepository.insert(contact)
 
     }
+
     fun delete(contact: ContactEntity) = viewModelScope.launch {
         contactRepository.delete(contact)
     }
+
     fun update(contact: ContactEntity) = viewModelScope.launch {
         contactRepository.update(contact)
 
@@ -60,7 +66,13 @@ class MainScreenViewModel @Inject constructor(private val contactRepository: Con
                     it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 val photoUri =
                     it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-                contactList.add(ContactEntity(name = name, phoneNumber = phone, avatarUrl = photoUri))
+                contactList.add(
+                    ContactEntity(
+                        name = name,
+                        phoneNumber = phone,
+                        avatarUrl = photoUri
+                    )
+                )
             }
         }
         _contacts.clear()
@@ -69,6 +81,7 @@ class MainScreenViewModel @Inject constructor(private val contactRepository: Con
         _filteredContacts.addAll(contactList)
         return contactList
     }
+
     fun searchContacts(query: String) {
         _filteredContacts.clear()
         val filteredList = _contacts.filter { contact ->
