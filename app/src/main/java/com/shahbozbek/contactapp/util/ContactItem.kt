@@ -1,4 +1,4 @@
-package com.shahbozbek.contactapp
+package com.shahbozbek.contactapp.util
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shahbozbek.contactapp.R
 import com.shahbozbek.contactapp.data.ContactEntity
 
 @Composable
@@ -34,13 +35,13 @@ fun ContactInRow() {
     val contacts = remember { mutableStateListOf<ContactEntity>() }
     Column(
         modifier = Modifier
-            .height(200.dp)
-            .width(166.dp),
+            .height(180.dp)
+            .width(146.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.Start
         ) {
-            Card(modifier = Modifier.size(150.dp),
+            Card(modifier = Modifier.size(130.dp),
                 onClick = {
 
                 },
@@ -61,7 +62,7 @@ fun ContactInRow() {
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 12.dp)
         ) {
             Text(
                 text = "Contact name name name name name",
@@ -69,13 +70,13 @@ fun ContactInRow() {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
-                    .width(120.dp),
+                    .width(100.dp),
                 style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "A few minutes ago",
+                text = "2 Mins ago",
                 style = TextStyle(fontSize = 12.sp)
             )
         }

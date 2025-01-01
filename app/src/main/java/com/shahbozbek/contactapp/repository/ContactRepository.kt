@@ -1,4 +1,4 @@
-package com.shahbozbek.contactapp
+package com.shahbozbek.contactapp.repository
 
 import com.shahbozbek.contactapp.data.ContactDao
 import com.shahbozbek.contactapp.data.ContactEntity

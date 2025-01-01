@@ -1,7 +1,9 @@
-package com.shahbozbek.contactapp.data
+package com.shahbozbek.contactapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.shahbozbek.contactapp.data.ContactDao
+import com.shahbozbek.contactapp.data.ContactDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

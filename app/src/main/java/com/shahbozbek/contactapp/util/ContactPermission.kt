@@ -1,8 +1,7 @@
-package com.shahbozbek.contactapp
+package com.shahbozbek.contactapp.util
 
 import android.app.Activity
 import android.content.Context
-import android.provider.ContactsContract
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,54 +13,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.shahbozbek.contactapp.ui.screens.MainScreenViewModel
+import com.shahbozbek.contactapp.ui.screens.MainScreen
 import com.shahbozbek.contactapp.data.ContactEntity
 
 @Composable
-fun ContactApp(viewModel: ContactViewModel) {
+fun ContactApp(viewModel: MainScreenViewModel) {
     val context = LocalContext.current
     ContactPermission(context, viewModel)
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ContactPermission(context: Context, viewModel: ContactViewModel) {
+fun ContactPermission(context: Context, viewModel: MainScreenViewModel) {
     val permissionState = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
-    if (!permissionState.status.isGranted) {
-        Button(onClick = { permissionState.launchPermissionRequest() }) {
-            Text("Ruxsat berish")
-        }
-    } else {
-        val contacts = fetchContacts(context)
-        ContactsList(contacts = contacts)
-    }
-    val hasPermission = remember {
-        ContextCompat.checkSelfPermission(
-            context,
-            android.Manifest.permission.READ_CONTACTS
-        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-    }
-    if (hasPermission) {
-        val contacts = fetchContacts(context)
-        ContactsList(contacts = contacts)
-        ContactsScreen(viewModel)
-    } else {
-        Button(onClick = { permissionState.launchPermissionRequest() }) {
-            Text("Ruxsat berish")
-        }
-    }
-
     if (permissionState.status.isGranted) {
-        val contacts = fetchContacts(context)
-        ContactsList(contacts = contacts)
+        MainScreen(viewModel)
     } else {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -70,8 +43,8 @@ fun ContactPermission(context: Context, viewModel: ContactViewModel) {
         ) {
             PermissionRequestScreen(
                 onPermissionGranted = {
-                    val contacts = fetchContacts(context)
-                    ContactsList(contacts = contacts)
+//                    val contacts = fetchContacts(context)
+//                    ContactsList(contacts = contacts)
                 },
                 onPermissionDenied = { /* Nima qilishni hal qiling */ }
             )
@@ -102,40 +75,11 @@ fun PermissionRequestScreen(
                 100
             )
         }) {
-            Text("Ruxsat so'rash")
+            Text("Ruxsat berish")
         }
     }
 }
 
 fun groupContactsByInitial(contacts: List<ContactEntity>): Map<Char, List<ContactEntity>> {
     return contacts.groupBy { it.name.firstOrNull()?.uppercaseChar() ?: '#' }
-}
-
-fun fetchContacts(context: Context): List<ContactEntity> {
-    val contactList = mutableListOf<ContactEntity>()
-    val contentResolver = context.contentResolver
-    val cursor = contentResolver.query(
-        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-        arrayOf(
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.PHOTO_URI
-        ),
-        null,
-        null,
-        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
-    )
-
-    cursor?.use {
-        while (it.moveToNext()) {
-            val name =
-                it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phone =
-                it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            val photoUri =
-                it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-            contactList.add(ContactEntity(name = name, phoneNumber = phone, avatarUrl = photoUri))
-        }
-    }
-    return contactList
 }
