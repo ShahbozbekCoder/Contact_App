@@ -9,5 +9,6 @@ data class ContactEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val phoneNumber: String,
-    val avatarUrl: String? = null
+    val avatarUrl: String? = null,
+    val lastCallTime: Long? = null
 ): Serializable

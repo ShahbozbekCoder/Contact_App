@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shahbozbek.contactapp.ui.screens.edit.ContactDetailScreen
 import com.shahbozbek.contactapp.ui.screens.main.MainScreen
-import com.shahbozbek.contactapp.ui.screens.main.MainScreenViewModel
 import com.shahbozbek.contactapp.util.ContactApp
 
 @Composable
